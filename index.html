@@ -85,12 +85,13 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchAll() {
         // TODO
-        fetch('http://localhost:3000/posts').then(response => {
+        const getEndPoint = document.getElementById('endpoint').value.toString();
+        fetch(endpoint).then(response => {
           return response.json();
         }).then(data => {
-          document.getElementById('output').innerHTML = JSON.parse(data);
-        }).catch(err => {
-          document.getElementById('output').innerHTML = 'Network Error: 404';
+          document.getElementById('output').textContent = JSON.stringify(data)
+        }).then(err => {
+          document.getElementById('output').textContent = JSON.stringify(err)
         })
       }
 
