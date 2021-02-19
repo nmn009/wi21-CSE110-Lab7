@@ -83,7 +83,7 @@
       fetch(endpoint)
         .then(response => response.json())
         .then(json => document.getElementById('output').textContent = JSON.stringify(json))
-        .then(err => document.getElementById('output').textContent = 'Network Error: 404');
+        .then(err => document.getElementById('output').textContent = err);
 
       document.getElementById('recordForm').style.display = 'none';
       document.getElementById('recordIDcontainer').style.display = 'none';
