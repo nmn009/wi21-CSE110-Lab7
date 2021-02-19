@@ -82,7 +82,7 @@
       const endpoint = document.getElementById('endpoint').value.toString();
       fetch(endpoint)
         .then(response => response.json())
-        .then(data => document.getElementById('output').textContent = JSON.stringify(data))
+        .then(json => document.getElementById('output').textContent = JSON.stringify(json))
         .then(err => document.getElementById('output').textContent = 'Network Error: 404');
 
       document.getElementById('recordForm').style.display = 'none';
