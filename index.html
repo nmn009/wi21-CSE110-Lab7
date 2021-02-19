@@ -85,6 +85,13 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchAll() {
         // TODO
+        const res = await fetch('http://localhost:3000/posts');
+        let ele = await res.json();
+        if (ele) {
+          document.getElementById('output').innerHTML = JSON.stringify(ele);
+        } else {
+          document.getElementById('output').innerHTML = 
+        }
       }
 
       // This function should fetch one entry from the given endpoint.
