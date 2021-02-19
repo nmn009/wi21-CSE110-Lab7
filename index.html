@@ -80,7 +80,7 @@
     function fetchAll() {
       // TODO
       const getendpoint = document.getElementById('endpoint').value.toString();
-      fetch(endpoint)
+      fetch(getendpoint)
         .then(response => response.json())
         .then(json => document.getElementById('output').textContent = JSON.stringify(json))
         .then(err => document.getElementById('output').textContent = err);
@@ -99,8 +99,8 @@
       const getID = window.prompt('Enter record id');
       const getendpoint = `${document.getElementById('endpoint').value.toString()}/${id.toString()}`;
       fetch(getendpoint).then(response => response.json())
-      .then(json =>document.getElementById('output').textContent = JSON.stringify(json))
-      .then(err => document.getElementById('output').textContent = err);
+        .then(json => document.getElementById('output').textContent = JSON.stringify(json))
+        .then(err => document.getElementById('output').textContent = err);
 
       document.getElementById('recordForm').style.display = 'none';
       document.getElementById('recordIDcontainer').style.display = 'none';
@@ -113,23 +113,23 @@
     function createRecord() {
       // TODO
       const author = document.getElementById('author').value.toString();
-          const title = document.getElementById('title').value.toString();
-          const postdata = {
-            'author': author,
-            'title': title
-          }
+      const title = document.getElementById('title').value.toString();
+      const postdata = {
+        'author': author,
+        'title': title
+      }
 
-          const endpoint = document.getElementById('endpoint').value.toString();
-          fetch(endpoint, {
-              method: 'POST',
-              headers: {
-                'Content-type': 'application/json'
-              },
-              body: JSON.stringify(postdata)
-            })
-            .then(response => response.json())
-            .then(json => document.getElementById('output').textContent = JSON.stringify(json))
-            .then(err => document.getElementById('output').textContent = err);
+      const getendpoint = document.getElementById('endpoint').value.toString();
+      fetch(getendpoint, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(postdata)
+      })
+        .then(response => response.json())
+        .then(json => document.getElementById('output').textContent = JSON.stringify(json))
+        .then(err => document.getElementById('output').textContent = err);
     }
 
     // This function should use fetch to update one existing entry in the given endpoint.
@@ -139,30 +139,30 @@
     function updateRecord() {
       // TODO
       if (command == 'show') {
-          document.getElementById('recordForm').style.display = 'block';
-          document.getElementById('recordIDcontainer').style.display = 'block';
+        document.getElementById('recordForm').style.display = 'block';
+        document.getElementById('recordIDcontainer').style.display = 'block';
+      }
+      else if (command == 'submit') {
+        const author = document.getElementById('author').value.toString();
+        const title = document.getElementById('title').value.toString();
+        const postdata = {
+          'author': author,
+          'title': title
         }
-        else if (command == 'submit') {
-          const author = document.getElementById('author').value.toString();
-          const title = document.getElementById('title').value.toString();
-          const postdata = {
-            'author': author,
-            'title': title
-          }
 
-          const id = document.getElementById('recordID').value;
-          const endpoint = `${document.getElementById('endpoint').value.toString()}/${id.toString()}`;
-          fetch(endpoint, {
-              method: 'PUT',
-              headers: {
-                'Content-type': 'application/json'
-              },
-              body: JSON.stringify(postdata)
-            })
-            .then(response => response.json())
-            .then(json => document.getElementById('output').textContent = JSON.stringify(json))
-            .then(err => document.getElementById('output').textContent = err);
-        }
+        const id = document.getElementById('recordID').value;
+        const getendpoint = `${document.getElementById('endpoint').value.toString()}/${id.toString()}`;
+        fetch(getendpoint, {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(postdata)
+        })
+          .then(response => response.json())
+          .then(json => document.getElementById('output').textContent = JSON.stringify(json))
+          .then(err => document.getElementById('output').textContent = err);
+      }
     }
 
     // This function should use fetch to delete one existing entry in the given endpoint.
@@ -173,19 +173,19 @@
     function deleteRecord() {
       // TODO
       document.getElementById('recordForm').style.display = 'none';
-        document.getElementById('recordIDcontainer').style.display = 'none';
+      document.getElementById('recordIDcontainer').style.display = 'none';
 
-        const id = window.prompt('Enter record ID');
-        const endpoint = `${document.getElementById('endpoint').value.toString()}/${id.toString()}`;
-        fetch(endpoint, {
-              method: 'DELETE',
-              headers: {
-                'Content-type': 'application/json'
-              }
-            })
-            .then(response => response.json())
-            .then(json => document.getElementById('output').textContent = '{}')
-            .then(err => document.getElementById('output').textContent = err);
+      const id = window.prompt('Enter record ID');
+      const getendpoint = `${document.getElementById('endpoint').value.toString()}/${id.toString()}`;
+      fetch(getendpoint, {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(json => document.getElementById('output').textContent = '{}')
+        .then(err => document.getElementById('output').textContent = err);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
