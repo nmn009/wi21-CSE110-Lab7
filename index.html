@@ -79,11 +79,11 @@
     // the writeup to view the URL pattern for fetch one and fetch all
     function fetchAll() {
       // TODO
-      const getendpoint = document.getElementById('endpoint').value.toString();
-      fetch(getendpoint)
+      const endpoint = document.getElementById('endpoint').value.toString();
+      fetch(endpoint)
         .then(response => response.json())
         .then(json => document.getElementById('output').textContent = JSON.stringify(json))
-        .then(err => document.getElementById('output').textContent = err);
+        .catch(err => document.getElementById('output').textContent = err);
 
       document.getElementById('recordForm').style.display = 'none';
       document.getElementById('recordIDcontainer').style.display = 'none';
@@ -97,10 +97,16 @@
     function fetchOne() {
       // TODO
       const getID = window.prompt('Enter record id');
-      const getendpoint = `${document.getElementById('endpoint').value.toString()}/${id.toString()}`;
+      const getendpoint = `${document.getElementById('endpoint').value.toString()}/${getID.toString()}`;
       fetch(getendpoint).then(response => response.json())
-        .then(json => document.getElementById('output').textContent = JSON.stringify(json))
-        .then(err => document.getElementById('output').textContent = err);
+        .then(json => {
+          if (JSON.stringify(json)!=JSON.stringify({})){
+            document.getElementById('output').textContent = JSON.stringify(json);
+          } else {
+            document.getElementById('output').textContent = 'Network Error: 404';
+          }
+        })
+        .catch(err => document.getElementById('output').textContent = err);
 
       document.getElementById('recordForm').style.display = 'none';
       document.getElementById('recordIDcontainer').style.display = 'none';
@@ -110,33 +116,37 @@
     // From the 4 CRUD actions, this is the CREATE action, and uses the POST http method.
     // The main difference from updateRecord() will be the URL you send data to; check
     // the writeup to view the URL pattern for create and update
-    function createRecord() {
+    function createRecord(command) {
       // TODO
-      const author = document.getElementById('author').value.toString();
-      const title = document.getElementById('title').value.toString();
-      const postdata = {
-        'author': author,
-        'title': title
+      if (command == 'show') {
+        document.getElementById('recordForm').style.display = 'block';
+        document.getElementById('recordIDcontainer').style.display = 'none';
+      } else if (command == 'submit') {
+        const author = document.getElementById('author').value.toString();
+        const title = document.getElementById('title').value.toString();
+        const data = {
+          'author': author,
+          'title': title
+        }
+        const getendpoint = document.getElementById('endpoint').value.toString();
+        fetch(getendpoint, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+          .then(response => response.json())
+          .then(json => document.getElementById('output').textContent = JSON.stringify(json))
+          .catch(err => document.getElementById('output').textContent = err);
       }
-
-      const getendpoint = document.getElementById('endpoint').value.toString();
-      fetch(getendpoint, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(postdata)
-      })
-        .then(response => response.json())
-        .then(json => document.getElementById('output').textContent = JSON.stringify(json))
-        .then(err => document.getElementById('output').textContent = err);
     }
 
     // This function should use fetch to update one existing entry in the given endpoint.
     // From the 4 CRUD actions, this is the UPDATE action, and uses the PUT http method.
     // The main difference from createRecord() will be the URL you send data to; check
     // the writeup to view the URL pattern for create and update
-    function updateRecord() {
+    function updateRecord(command) {
       // TODO
       if (command == 'show') {
         document.getElementById('recordForm').style.display = 'block';
@@ -161,7 +171,7 @@
         })
           .then(response => response.json())
           .then(json => document.getElementById('output').textContent = JSON.stringify(json))
-          .then(err => document.getElementById('output').textContent = err);
+          .catch(err => document.getElementById('output').textContent = err);
       }
     }
 
@@ -175,9 +185,9 @@
       document.getElementById('recordForm').style.display = 'none';
       document.getElementById('recordIDcontainer').style.display = 'none';
 
-      const id = window.prompt('Enter record ID');
-      const getendpoint = `${document.getElementById('endpoint').value.toString()}/${id.toString()}`;
-      fetch(getendpoint, {
+      const getID = window.prompt('Enter record ID');
+      const endpoint = `${document.getElementById('endpoint').value.toString()}/${getID.toString()}`;
+      fetch(endpoint, {
         method: 'DELETE',
         headers: {
           'Content-type': 'application/json'
@@ -185,7 +195,7 @@
       })
         .then(response => response.json())
         .then(json => document.getElementById('output').textContent = '{}')
-        .then(err => document.getElementById('output').textContent = err);
+        .catch(err => document.getElementById('output').textContent = err);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
